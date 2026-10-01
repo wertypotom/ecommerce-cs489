@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Deployment" id="cVCayFiSE-w0DtENeyQg">
+    <mxGraphModel dx="1285" dy="884" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Developer" vertex="1">
+          <mxGeometry height="50" width="140" x="60" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="GitHub Repository" vertex="1">
+          <mxGeometry height="50" width="140" x="60" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;fontSize=12;" value="CI/CD Pipeline (GitHub Actions)" vertex="1">
+          <mxGeometry height="270" width="260" x="40" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="Lint (code style)" vertex="1">
+          <mxGeometry height="36" width="200" x="70" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="Unit tests (JUnit + Mockito)" vertex="1">
+          <mxGeometry height="36" width="200" x="70" y="366" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="Build (Spring Boot JAR + React bundle)" vertex="1">
+          <mxGeometry height="36" width="200" x="70" y="422" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="Checks (vulnerabilities, coverage)" vertex="1">
+          <mxGeometry height="36" width="200" x="70" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=11;" value="Users (browser)" vertex="1">
+          <mxGeometry height="40" width="130" x="555" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;fontSize=12;" value="Client Server" vertex="1">
+          <mxGeometry height="100" width="280" x="480" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="nginx — React SPA (static build)" vertex="1">
+          <mxGeometry height="45" width="240" x="500" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;fontSize=12;" value="Backend Server" vertex="1">
+          <mxGeometry height="110" width="280" x="480" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="Spring Boot JAR (Java 17, port 8080)" vertex="1">
+          <mxGeometry height="45" width="240" x="500" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=none;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;fontSize=12;" value="Database Server" vertex="1">
+          <mxGeometry height="120" width="280" x="480" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-15" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=none;fontSize=10;" value="PostgreSQL (port 5432)" vertex="1">
+          <mxGeometry height="70" width="180" x="530" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-16" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-1" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-2" value="git push">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-17" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-2" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-3" value="triggers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-18" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-4" style="endArrow=block;endFill=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-19" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-5" style="endArrow=block;endFill=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-20" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-6" style="endArrow=block;endFill=1;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170.0000000000001" y="478" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-22" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-3" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=1;exitY=0.15;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-10" value="deploy React bundle (all checks pass)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-23" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-3" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-12" value="deploy JAR (all checks pass)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-24" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-9" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-10" value="HTTP(S)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-25" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-10" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-12" value="REST /api · JSON + Bearer JWT">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="j9-2NCTNrPUgpxmtSBvN-26" edge="1" parent="1" source="j9-2NCTNrPUgpxmtSBvN-12" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="j9-2NCTNrPUgpxmtSBvN-14" value="JDBC (private network)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
