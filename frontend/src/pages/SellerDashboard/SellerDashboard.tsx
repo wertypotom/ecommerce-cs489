@@ -4,6 +4,16 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Loading } from '../../components/Loading';
 import type { Product, ProductRequest } from '../../types';
 import styles from './SellerDashboard.module.css';
+import { Link } from 'react-router-dom';
+
+const defaultFormData: ProductRequest = {
+  name: '',
+  description: '',
+  price: 0,
+  stock: 0,
+  weight: 0,
+  category: '',
+}
 
 export function SellerDashboard() {
   const { user } = useAuth();
@@ -11,14 +21,7 @@ export function SellerDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState<ProductRequest>({
-    name: '',
-    description: '',
-    price: 0,
-    stock: 0,
-    weight: 0,
-    category: '',
-  });
+  const [formData, setFormData] = useState<ProductRequest>(defaultFormData);
 
   useEffect(() => {
     if (user) {
@@ -49,7 +52,7 @@ export function SellerDashboard() {
       }
       setShowForm(false);
       setEditingProduct(null);
-      setFormData({ name: '', description: '', price: 0, stock: 0, weight: 0, category: '' });
+      setFormData(defaultFormData);
       loadProducts();
     } catch (error) {
       console.log("Error in handleSubmit 💥", (error as Error).message)
@@ -78,6 +81,12 @@ export function SellerDashboard() {
       console.log("Error in handleDelete 💥", (error as Error).message)
     }
   };
+
+  const handleCancel = () => {
+    setShowForm(false); 
+    setEditingProduct(null); 
+    setFormData(defaultFormData);
+  }
 
   if (isLoading) return <Loading />;
 
@@ -155,7 +164,7 @@ export function SellerDashboard() {
               </div>
             </div>
             <div className={styles.actions}>
-              <button type="button" onClick={() => { setShowForm(false); setEditingProduct(null); }}>
+              <button type="button" onClick={handleCancel}>
                 Cancel
               </button>
               <button type="submit" className={styles.submitBtn}>
@@ -173,7 +182,7 @@ export function SellerDashboard() {
       ) : (
         <div className={styles.products}>
           {products.map(product => (
-            <div key={product.id} className={styles.product}>
+            <Link to={`/products/${product.id}`} key={product.id} className={styles.product}>
               <div className={styles.productInfo}>
                 <h3>{product.name}</h3>
                 <p className={styles.category}>{product.category}</p>
@@ -188,7 +197,7 @@ export function SellerDashboard() {
                   Delete
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
