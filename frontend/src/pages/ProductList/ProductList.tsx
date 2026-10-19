@@ -13,16 +13,28 @@ export function ProductList() {
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
+    loadCategories();
+  }, []);
+
+  useEffect(() => {
     loadProducts();
   }, [category]);
+
+  const loadCategories = async () => {
+    try {
+      const data = await productApi.getAll();
+      const uniqueCategories = [...new Set(data.map(p => p.category))].filter(Boolean);
+      setCategories(uniqueCategories);
+    } catch {
+      // Categories will just be empty
+    }
+  };
 
   const loadProducts = async () => {
     setIsLoading(true);
     try {
       const data = await productApi.getAll(category ? { category } : undefined);
       setProducts(data);
-      const uniqueCategories = [...new Set(data.map(p => p.category))].filter(Boolean);
-      setCategories(uniqueCategories);
     } catch {
       setError('Failed to load products');
     } finally {

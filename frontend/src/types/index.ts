@@ -100,10 +100,8 @@ export interface CartItemRequest {
   quantity: number;
 }
 
-export interface OrderRequest {
+export interface CheckoutRequest {
   shippingAddress: string;
-  total: number;
-  userId: number;
 }
 
 export interface ReviewRequest {

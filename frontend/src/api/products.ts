@@ -2,7 +2,7 @@ import apiClient from './client';
 import type { Product, ProductRequest } from '../types';
 
 export const productApi = {
-  getAll: async (params?: { category?: string; minPrice?: number; maxPrice?: number }): Promise<Product[]> => {
+  getAll: async (params?: { category?: string }): Promise<Product[]> => {
     const response = await apiClient.get<Product[]>('/products', { params });
     return response.data;
   },
