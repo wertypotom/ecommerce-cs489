@@ -1,40 +1,37 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { isAxiosError } from 'axios';
 import { orderApi } from '../../api';
-import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
 import styles from './Checkout.module.css';
 
 export function Checkout() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { cart, clearCart } = useCart();
+  const { cart, refreshCart } = useCart();
   const [shippingAddress, setShippingAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
-  if (!cart || cart.items.length === 0) {
-    navigate('/cart');
-    return null;
+  if (!orderPlaced && (!cart || cart.items.length === 0)) {
+    return <Navigate to="/cart" replace />;
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user) return;
 
     setIsLoading(true);
     setError('');
 
     try {
-      await orderApi.checkout({
-        shippingAddress,
-        total: cart.total,
-        userId: user.id,
-      });
-      await clearCart();
+      await orderApi.checkout({ shippingAddress });
+      setOrderPlaced(true);
+      await refreshCart();
       navigate('/orders');
-    } catch {
-      setError('Failed to place order. Please try again.');
+    } catch (err) {
+      const data = isAxiosError(err) ? err.response?.data : undefined;
+      const fieldErrors = data?.details ? Object.values(data.details).join(', ') : undefined;
+      setError(data?.message || fieldErrors || 'Failed to place order. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -76,7 +73,7 @@ export function Checkout() {
         <div className={styles.summary}>
           <h2>Order Summary</h2>
           <div className={styles.items}>
-            {cart.items.map(item => (
+            {(cart?.items ?? []).map(item => (
               <div key={item.id} className={styles.item}>
                 <span className={styles.itemName}>{item.productName}</span>
                 <span className={styles.itemQty}>x{item.quantity}</span>
@@ -86,7 +83,7 @@ export function Checkout() {
           </div>
           <div className={styles.total}>
             <span>Total</span>
-            <span>${cart.total.toFixed(2)}</span>
+            <span>${(cart?.total ?? 0).toFixed(2)}</span>
           </div>
         </div>
       </div>

@@ -42,8 +42,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [refreshCart]);
 
   const addToCart = async (productId: number, quantity: number) => {
-    if (!cart) return;
-    await cartApi.addItem(cart.id, { productId, quantity });
+    if (!isAuthenticated || !user) return;
+    let currentCart = cart;
+    if (!currentCart) {
+      try {
+        currentCart = await cartApi.getByUserId(user.id);
+        setCart(currentCart);
+      } catch {
+        return;
+      }
+    }
+    await cartApi.addItem(currentCart.id, { productId, quantity });
     await refreshCart();
   };
 
@@ -64,7 +73,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clearCart = async () => {
     if (!cart) return;
     await cartApi.clear(cart.id);
-    setCart(null);
+    await refreshCart();
   };
 
   const itemCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;

@@ -1,5 +1,5 @@
 import apiClient from './client';
-import type { Order, OrderRequest, OrderStatus } from '../types';
+import type { CheckoutRequest, Order, OrderStatus } from '../types';
 
 export const orderApi = {
   getAll: async (): Promise<Order[]> => {
@@ -17,8 +17,8 @@ export const orderApi = {
     return response.data;
   },
 
-  checkout: async (data: OrderRequest): Promise<Order> => {
-    const response = await apiClient.post<Order>('/orders', data);
+  checkout: async (data: CheckoutRequest): Promise<Order> => {
+    const response = await apiClient.post<Order>('/orders/checkout', data);
     return response.data;
   },
 
