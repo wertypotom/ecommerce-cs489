@@ -1,19 +1,21 @@
 spring:
-  application:
-    name: ecommerce-backend
-
   datasource:
-    url: jdbc:postgresql://localhost:${DB_PORT:5434}/${DB_NAME:ecommerce_db}
-    username: ${DB_USER:admin}
-    password: ${DB_PASSWORD:secretpassword}
-
+    url: jdbc:postgresql://localhost:5434/ecommerce_db
+    username: admin
+    password: secretpassword
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
-    open-in-view: false
+    show-sql: false
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+jwt:
+  secret: Y29tLWVjb21tZXJjZS1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tZ2VuZXJhdGlvbi1hdC1sZWFzdC0yNTYtYml0cw==
+  expiration: 86400000
+
 server:
-  port: ${SERVER_PORT:8082}
+  port: 8085
