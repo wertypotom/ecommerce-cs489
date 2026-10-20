@@ -182,22 +182,26 @@ export function SellerDashboard() {
       ) : (
         <div className={styles.products}>
           {products.map(product => (
-            <Link to={`/products/${product.id}`} key={product.id} className={styles.product}>
-              <div className={styles.productInfo}>
+            <div key={product.id} className={styles.product}>
+              <Link to={`/products/${product.id}`} className={styles.productInfo}>
                 <h3>{product.name}</h3>
                 <p className={styles.category}>{product.category}</p>
                 <div className={styles.meta}>
                   <span>${product.price.toFixed(2)}</span>
                   <span>Stock: {product.stock}</span>
                 </div>
-              </div>
+              </Link>
               <div className={styles.productActions}>
-                <button onClick={() => handleEdit(product)}>Edit</button>
-                <button onClick={() => handleDelete(product.id)} className={styles.deleteBtn}>
+                <button type="button" onClick={() => handleEdit(product)}>Edit</button>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(product.id)}
+                  className={styles.deleteBtn}
+                >
                   Delete
                 </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

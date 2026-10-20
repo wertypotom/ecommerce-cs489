@@ -55,6 +55,15 @@
   color: inherit;
 }
 
+.productInfo {
+  text-decoration: none;
+  color: inherit;
+}
+
+.productInfo:hover h3 {
+  text-decoration: underline;
+}
+
 .productInfo h3 {
   font-size: 1.125rem;
   font-weight: 600;

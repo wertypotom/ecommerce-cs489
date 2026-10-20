@@ -2,6 +2,7 @@ package com.ecommerce.controller;
 
 import com.ecommerce.dto.CartItemRequest;
 import com.ecommerce.dto.CartItemResponse;
+import com.ecommerce.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,12 @@ import java.util.List;
 @RequestMapping("/api/cart-items")
 public class CartItemController {
 
+    private final CartService cartService;
+
+    public CartItemController(CartService cartService) {
+        this.cartService = cartService;
+    }
+
     @GetMapping
     public ResponseEntity<List<CartItemResponse>> getAllCartItems() {
         return ResponseEntity.ok(List.of());
@@ -28,21 +35,21 @@ public class CartItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CartItemResponse> getCartItemById(@PathVariable Long id) {
-        CartItemResponse response = new CartItemResponse(id, 1L, "Product Name", 2, 
+        CartItemResponse response = new CartItemResponse(id, 1L, "Product Name", 2,
                 new BigDecimal("99.99"), new BigDecimal("199.98"));
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<CartItemResponse> createCartItem(@Valid @RequestBody CartItemRequest request) {
-        CartItemResponse response = new CartItemResponse(1L, request.getProductId(), "Product Name", 
+        CartItemResponse response = new CartItemResponse(1L, request.getProductId(), "Product Name",
                 request.getQuantity(), new BigDecimal("99.99"), new BigDecimal("99.99"));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CartItemResponse> updateCartItem(@PathVariable Long id, @Valid @RequestBody CartItemRequest request) {
-        CartItemResponse response = new CartItemResponse(id, request.getProductId(), "Product Name", 
+        CartItemResponse response = new CartItemResponse(id, request.getProductId(), "Product Name",
                 request.getQuantity(), new BigDecimal("99.99"), new BigDecimal("99.99"));
         return ResponseEntity.ok(response);
     }
