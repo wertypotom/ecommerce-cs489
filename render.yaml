@@ -1,0 +1,60 @@
+# Render Blueprint - https://render.com/docs/blueprint-spec
+#
+# Creates three resources in your workspace:
+#   ecommerce-db        managed PostgreSQL 16
+#   ecommerce-backend   Docker web service (Spring Boot)
+#   ecommerce-frontend  Docker web service (nginx: React build + /api reverse proxy)
+#
+# Deploy: Render Dashboard -> New + -> Blueprint, then point it at this repo.
+# Render will prompt for every variable marked `sync: false`.
+
+databases:
+  - name: ecommerce-db
+    plan: free
+    databaseName: ecommerce_db
+    postgresMajorVersion: '16'
+
+services:
+  - type: web
+    name: ecommerce-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    # Public endpoint (permitAll in SecurityConfig) that also exercises the DB.
+    healthCheckPath: /api/products
+    envVars:
+      # Render supplies Postgres as postgresql://user:pass@host:port/db.
+      # com.ecommerce.config.DataSourceConfig rewrites that into a JDBC URL at
+      # startup, because the PostgreSQL driver will not parse the userinfo form.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecommerce-db
+          property: connectionString
+      # Generates a base64-encoded 256-bit secret (HS256 signing key).
+      - key: JWT_SECRET
+        generateValue: true
+      # Hibernate creates/updates the schema on boot; there are no migrations.
+      - key: JPA_DDL_AUTO
+        value: update
+
+  - type: web
+    name: ecommerce-frontend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    healthCheckPath: /
+    envVars:
+      # Render will prompt for this value. Enter the backend's public origin:
+      #
+      #     https://ecommerce-backend.onrender.com
+      #
+      # Render assigns https://<service-name>.onrender.com, so the value above is
+      # correct as long as that subdomain was still free - confirm it in the
+      # backend service's Settings if the frontend cannot reach the API.
+      #
+      # Must be a bare origin with NO trailing slash and no path (see
+      # frontend/nginx.conf.template for why).
+      - key: BACKEND_URL
+        sync: false

@@ -1,21 +1,21 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/ecommerce_db
-    username: admin
-    password: secretpassword
+    url: ${DB_URL:jdbc:postgresql://localhost:5434/ecommerce_db}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:secretpassword}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 jwt:
-  secret: Y29tLWVjb21tZXJjZS1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tZ2VuZXJhdGlvbi1hdC1sZWFzdC0yNTYtYml0cw==
-  expiration: 86400000
+  secret: ${JWT_SECRET:Y29tLWVjb21tZXJjZS1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tZ2VuZXJhdGlvbi1hdC1sZWFzdC0yNTYtYml0cw==}
+  expiration: ${JWT_EXPIRATION:86400000}
 
 server:
-  port: 8085
+  port: ${PORT:8085}

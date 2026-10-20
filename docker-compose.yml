@@ -4,13 +4,47 @@ services:
     container_name: ecommerce_postgres
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secretpassword
-      POSTGRES_DB: ecommerce_db
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
     ports:
       - "5434:5432"
     volumes:
       - ecommerce_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-ecommerce_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  backend:
+    build: ./backend
+    container_name: ecommerce_backend
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-ecommerce_db}
+      DB_USERNAME: ${POSTGRES_USER:-admin}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-secretpassword}
+      JWT_SECRET: ${JWT_SECRET:-Y29tLWVjb21tZXJjZS1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tZ2VuZXJhdGlvbi1hdC1sZWFzdC0yNTYtYml0cw==}
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: ecommerce_frontend
+    restart: unless-stopped
+    environment:
+      # No trailing slash: see frontend/nginx.conf.template.
+      BACKEND_URL: http://backend:8085
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
   ecommerce_postgres_data:

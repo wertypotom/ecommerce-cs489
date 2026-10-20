@@ -7,7 +7,9 @@ import com.ecommerce.dto.AuthRequest;
 import com.ecommerce.dto.AuthResponse;
 import com.ecommerce.dto.RegisterRequest;
 import com.ecommerce.dto.UserResponse;
+import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.exception.ConflictException;
+import com.ecommerce.exception.ForbiddenException;
 import com.ecommerce.repository.CartRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.security.CustomUserDetails;
@@ -17,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -53,10 +57,12 @@ public class AuthService {
             throw new ConflictException("Email already in use: " + request.getEmail());
         }
 
+        Role role = parseRole(request.getRole());
+
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.valueOf(request.getRole()));
+        user.setRole(role);
 
         User saved = userRepository.save(user);
 
@@ -65,6 +71,25 @@ public class AuthService {
 
         String token = jwtService.generateToken(new CustomUserDetails(saved));
         return new AuthResponse(token, toUserResponse(saved));
+    }
+
+    private Role parseRole(String role) {
+        if (role == null || role.isBlank()) {
+            throw new BadRequestException("Role is required");
+        }
+
+        Role parsed;
+        try {
+            parsed = Role.valueOf(role.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException("Invalid role: expected one of SELLER, CUSTOMER");
+        }
+
+        if (parsed == Role.ADMIN) {
+            throw new ForbiddenException("ADMIN accounts cannot be created through registration");
+        }
+
+        return parsed;
     }
 
     public UserResponse getCurrentUser(String email) {
